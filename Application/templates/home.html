@@ -8,14 +8,15 @@
 <form method="POST">
     Welcome! Use this app to find out more about a Business<br><br>
     Enter a Business ID:<br>
-    <select name="Business" , method="GET", autocomplete="on"><br>
+    <select name="Business" autocomplete="on"><br>
     {% for biz in bid %}
     <option value="{{biz}}">{{biz}}</option>
     {% endfor %}
     <input type="submit"><br>
 </form>
 <br>
-Showing Results for {{selected_biz}}: <br>
-
+<strong>Showing Details for Business {{selected_biz}}</strong> <br>
+<strong>Average Ratings:</strong>{{avg_rating}} <br>
+<strong>Summary:</strong><br> {{summary}} <br>
 </body>
 </html>
