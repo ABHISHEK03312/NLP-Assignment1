@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Encrypt</title>
+</head>
+<body>
+<form method="POST">
+    Welcome! Use this app to find out more about a Business<br><br>
+    Enter a Business ID:<br>
+    <select name="Business" , method="GET", autocomplete="on"><br>
+    {% for biz in bid %}
+    <option value="{{biz}}">{{biz}}</option>
+    {% endfor %}
+    <input type="submit"><br>
+</form>
+<br>
+Showing Results for {{selected_biz}}: <br>
+
+</body>
+</html>
