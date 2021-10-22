@@ -5,23 +5,31 @@ import pandas as pd
 app = Flask(__name__)
 # CORS(app)
 
-def summarise():
-    summary="This is a dummy summary, Replace with the extracter function"
-    return summary
+def summarise(biz):
+    # summary=extract_summary(biz)
+    data = pd.read_csv("generated_reviews.csv")
+    for i in range(len(data)):
+        if data["business_id"][i]==biz:
+            return data["summary"][i]
+    return "No summary found, try another business"
 
 def avg_rating(df, biz):
     biz_df=df[df['business_id']==biz]
     if len(biz_df!=0):
         return sum(biz_df['stars'])/len(biz_df)
+    return 0
 
-
+def ReadNER(biz):
+    # NER_dict={"ZBE-H_aUlicix_9vUGQPIQ":{"NER1":["r1", "r2"]}}
+    # return NER_dict[biz]
+    return 
 
 
 @app.route('/', methods=['GET', 'POST'])
 def search_biz():
     data = pd.read_csv("reviewSelected100.csv")
     selected_biz=request.form.get("Business")
-    summary =summarise()
+    summary =summarise(selected_biz)
     rating=avg_rating(data, selected_biz)
     return render_template("home.html", bid=list(data.business_id.unique()), selected_biz=selected_biz, summary=summary, avg_rating=rating)
 
