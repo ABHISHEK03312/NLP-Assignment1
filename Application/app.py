@@ -34,7 +34,8 @@ def search_biz():
         if selected_biz == "":  # submission made without selecting business, just return default page
             return render_template("home.html", **data_dict)
         
-        nerDict=ReadNER(selected_biz)
+        # nerDict=ReadNER(selected_biz)
+        nerDict = read_POS_NER(selected_biz)
 
         data_dict["selected_biz"]=selected_biz
         data_dict["summary"]=summarise(selected_biz)
