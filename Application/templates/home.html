@@ -2,39 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Business Reviewer</title>
+    <title>Business Reviews</title>
 </head>
 <body>
 <div>
 <form method="POST">
+    {% if flag1 %}
+    Showing the reviews of the selected business below.<br><br>
+    To choose a new business, select its ID here:<br>
+    {% else %}
     Welcome! Use this app to find out more about a Business<br><br>
     Enter a Business ID:<br>
+    {% endif %}
     <select name="Business" autocomplete="on"><br>
-    {% for biz in bid %}
-    <option value="{{biz}}">{{biz}}</option>
-    {% endfor %}
+        <!-- This way I can keep track of the last selected business id -->
+        <option value="{{selected_biz}}" selected hidden>
+            Select a new Business ID
+        </option>
+        {% for biz in bid %}
+        <option value="{{biz}}">{{biz}}</option>
+        {% endfor %}
+    </select>
     <input type="submit"><br>
-</form>
+<!-- </form> -->
 
+{% if flag1 %}
 </div>
 <br>
 <div>
 <strong>Showing Details for Business {{selected_biz}}</strong> <br>
-<strong>Average Ratings:</strong>{{avg_rating}} <br>
-<strong>Summary:</strong><br> {{summary}} <br>
-<strong>Average sentiment:</strong>{{senti}} <br>
+<strong>Average rating:</strong>{{avg_rating}}/5.00 stars<br>
+<strong>Average sentiment:</strong>{{senti}}/5.00 points<br><br>
+<strong>Average review:</strong><br> {{summary}} <br><br>
 <strong>Top positive Comment:</strong><br> {{pos}} <br>
 <strong>Top negative Comment:</strong><br> {{neg}} <br>
 </div>
 <br>
-<b>Named Entities found in the Business</b>
-<form method="POST" action="{{url_for('search_ner', nerInfo=ner)}}">
+<b>Common tags for this business</b>
+<!-- <form method="POST" action=""> -->
 {% for ner in ners %}
 <Input name="nerInfo" type="submit" value="{{ner}}">
 {% endfor %}
-{% for nerD in nerDet %}
-{{nerD}}<br>
+<br><br>
+{% if flag2 %}
+<strong>Here are some reviews about the "{{selected_ner}}" tag:</strong><br><br>
+{% for nerReview in nerData %}
+{{nerReview}}<br>
+<hr>
 {% endfor %}
+{% endif %}
+
+{% endif %}
 </form>
 </body>
 </html>
