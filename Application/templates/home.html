@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Encrypt</title>
+    <title>Business Reviewer</title>
 </head>
 <body>
+<div>
 <form method="POST">
     Welcome! Use this app to find out more about a Business<br><br>
     Enter a Business ID:<br>
@@ -14,9 +15,26 @@
     {% endfor %}
     <input type="submit"><br>
 </form>
+
+</div>
 <br>
+<div>
 <strong>Showing Details for Business {{selected_biz}}</strong> <br>
 <strong>Average Ratings:</strong>{{avg_rating}} <br>
 <strong>Summary:</strong><br> {{summary}} <br>
+<strong>Average sentiment:</strong>{{senti}} <br>
+<strong>Top positive Comment:</strong><br> {{pos}} <br>
+<strong>Top negative Comment:</strong><br> {{neg}} <br>
+</div>
+<br>
+<b>Named Entities found in the Business</b>
+<form method="POST" action="{{url_for('search_ner', nerInfo=ner)}}">
+{% for ner in ners %}
+<Input name="nerInfo" type="submit" value="{{ner}}">
+{% endfor %}
+{% for nerD in nerDet %}
+{{nerD}}<br>
+{% endfor %}
+</form>
 </body>
 </html>
