@@ -50,6 +50,20 @@ def ReadNER(biz):
     return NER_dict[biz]
     # return {"NER1":["r1", "r2"], "NER2":["r3", "r4"]}
 
+def read_POS_NER(biz_id):
+    with open('pos_ner_reviews.json', "r") as f:
+        business_ner_reviews = json.loads(f.read())
+    with open('pos_ner_counts.json', "r") as f:
+        business_ner_counts = json.loads(f.read())
+    topNERs = []
+    for k in business_ner_reviews[biz_id].keys():
+        topNERs.append((k, business_ner_counts[biz_id][k]))
+    topNERs.sort(key=lambda pair: pair[1], reverse=True)
+    nerDict = {}
+    for ner, occ in topNERs[:10]:
+        nerDict[ner] = business_ner_reviews[biz_id][ner]
+    return nerDict
+
 def get_NER_reviews(reviewIds, data):
     reviewSet = set(reviewIds)
     reviewList = []
