@@ -45,7 +45,7 @@ def top_negative(df, biz):
 
 def ReadNER(biz):
     # NER_dict={"ZBE-H_aUlicix_9vUGQPIQ":{"NER1":["r1", "r2"]}}
-    with open('business_review_id_new.json', "r") as f:
+    with open('business_review_id_clean.json', "r") as f:
         NER_dict = json.loads(f.read())
     return NER_dict[biz]
     # return {"NER1":["r1", "r2"], "NER2":["r3", "r4"]}

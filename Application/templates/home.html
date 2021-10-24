@@ -1,58 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Business Reviews</title>
-</head>
-<body>
-<div>
-<form method="POST">
-    {% if flag1 %}
-    Showing the reviews of the selected business below.<br><br>
-    To choose a new business, select its ID here:<br>
-    {% else %}
-    Welcome! Use this app to find out more about a Business<br><br>
-    Enter a Business ID:<br>
-    {% endif %}
-    <select name="Business" autocomplete="on"><br>
-        <!-- This way I can keep track of the last selected business id -->
-        <option value="{{selected_biz}}" selected hidden>
-            Select a new Business ID
-        </option>
-        {% for biz in bid %}
-        <option value="{{biz}}">{{biz}}</option>
+    <head>
+        <meta charset="UTF-8">
+        <title>Business Reviews</title>
+    </head>
+    <body>
+        
+        <form method="POST">
+        <div>
+            {% if flag1 %}
+            Showing the reviews of the selected business below.<br><br>
+            To choose a new business, select its ID here:<br>
+            {% else %}
+            Welcome! Use this app to find out more about a Business<br><br>
+            Enter a Business ID:<br>
+            {% endif %}
+            <select name="Business" autocomplete="on"><br>
+                <!-- This way I can keep track of the last selected business id -->
+                <option value="{{selected_biz}}" selected hidden>
+                    Select a new Business ID
+                </option>
+                {% for biz in bid %}
+                <option value="{{biz}}">{{biz}}</option>
+                {% endfor %}
+            </select>
+            <input type="submit"><br>
+        <!-- </form> -->
+
+        
+        </div>
+        {% if flag1 %}    
+        <br>
+        <div>
+            <strong>Showing Details for Business {{selected_biz}}</strong> <br>
+            <strong>Average rating:</strong>{{avg_rating}}/5.00 stars<br>
+            <strong>Average sentiment:</strong>{{senti}}/5.00 points<br><br>
+            <strong>Average review:</strong><br> {{summary}} <br><br>
+            <strong>Top positive Comment:</strong><br> {{pos}} <br>
+            <strong>Top negative Comment:</strong><br> {{neg}} <br>
+        </div>
+        <br>
+        <b>Common tags for this business</b>
+        <!-- <form method="POST" action=""> -->
+        {% for ner in ners %}
+        <Input name="nerInfo" type="submit" value="{{ner}}">
         {% endfor %}
-    </select>
-    <input type="submit"><br>
-<!-- </form> -->
+        <br><br>
+        {% if flag2 %}
+        <strong>Here are some reviews about the "{{selected_ner}}" tag:</strong><br><br>
+        {% for nerReview in nerData %}
+        {{nerReview}}<br>
+        <hr>
+        {% endfor %}
+        {% endif %}
 
-{% if flag1 %}
-</div>
-<br>
-<div>
-<strong>Showing Details for Business {{selected_biz}}</strong> <br>
-<strong>Average rating:</strong>{{avg_rating}}/5.00 stars<br>
-<strong>Average sentiment:</strong>{{senti}}/5.00 points<br><br>
-<strong>Average review:</strong><br> {{summary}} <br><br>
-<strong>Top positive Comment:</strong><br> {{pos}} <br>
-<strong>Top negative Comment:</strong><br> {{neg}} <br>
-</div>
-<br>
-<b>Common tags for this business</b>
-<!-- <form method="POST" action=""> -->
-{% for ner in ners %}
-<Input name="nerInfo" type="submit" value="{{ner}}">
-{% endfor %}
-<br><br>
-{% if flag2 %}
-<strong>Here are some reviews about the "{{selected_ner}}" tag:</strong><br><br>
-{% for nerReview in nerData %}
-{{nerReview}}<br>
-<hr>
-{% endfor %}
-{% endif %}
-
-{% endif %}
-</form>
-</body>
+        {% endif %}
+        </form>
+    </body>
 </html>
