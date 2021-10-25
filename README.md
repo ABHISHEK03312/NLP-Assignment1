@@ -1,5 +1,16 @@
 # NLP-Assignment1
 
+## Setup 
+
+Install Dependencies for the notebook using the command
+```
+pip install -r requirements.txt
+```
+
+Further run the following Commands in a .py file to download the packages:
+```
+
+```
 
 
 ### For 3.3) Indicative Adjective Phrases
