@@ -176,26 +176,45 @@ def get_reviews_top_frequent_nouns(combined_reviews,data):
         for j in combined_reviews.iloc[i]['most_common_nouns']:
             review_id_noun = []
             for k in range(data.shape[0]):
-                if(j in data.iloc[k]['text'].split()):
+                if(j[0] in data.iloc[k]['text'].split()):
                     review_id_noun.append(data.iloc[k]['review_id'])
-            word_dict_noun[j] = review_id_noun
+            word_dict_noun[j[0]] = review_id_noun
         business_review_noun[combined_reviews.iloc[i]['business_id']] = word_dict_noun
 
     return business_review_noun
 
-combined_reviews['most_common_nouns'] = combined_reviews.apply(lambda row: get_most_common_nouns(row['summary']),axis=1)
-business_review_noun = get_business_review_id(combined_reviews,data)
+# ner tags using spacy 
+def find_NER_phrases(inpt):
+    doc = nlp(inpt)
+    tagged_sent = [(w.text, w.tag_) for w in doc]
+    tags = ''
+    reverse_index = {}  # index in tags:position in tagged_sent
+    for i in range(len(tagged_sent)):
+        reverse_index[len(tags)] = i
+        tags += tagged_sent[i][1]+' '
+    phrases = []
+    for match in NP_detection.finditer(tags):
+        start = match.start()
+        group = match.group()
+        np_len = len(group.split())
+        try:
+            orig_index = reverse_index[start]
+        except:
+            print("\n\nError occured in text:")
+            print(inpt)
+            print(tagged_sent)
+            print(tags)
+            print(start, group)
+            print("\n")
+            continue
+        np = []
+        for i in range(orig_index, orig_index+np_len):
+            np.append(tagged_sent[i][0])
+        np = ' '.join(np)
+        phrases.append(np.lower())
+    return phrases
 
-# save files to json
-def json_write(business_review_id_clean):
-    with open('/Users/abhishekvaidyanathan/Desktop/NLP-Assignment1/business_review_id_clean.json', 'w') as convert_file:
-        convert_file.write(json.dumps(business_review_id_clean))
-
-    with open('/Users/abhishekvaidyanathan/Desktop/NLP-Assignment1/business_review_id_noun.json', 'w') as convert_file:
-        convert_file.write(json.dumps(business_review_noun)) 
-
-
-# summarization 
+# load data and varaibles. 
 review_df = data.copy()
 grouped = review_df.groupby('business_id')
 business_ids, reviews = [], []
@@ -203,6 +222,59 @@ for name, group in grouped:
     business_ids.append(name)
     reviews.append(group.reset_index(drop=True))
 
+def business_ner_review():
+    business_ner_reviews = {}
+    business_ner_counts = {}
+    for i in range(len(business_ids)):
+        biz_id = business_ids[i]
+        temp_df = reviews[i]
+        nerDict = {}  # dictionary of NE:list of reviews containing it
+        nerCount = {}
+        start = time.time()
+        for j in range(len(temp_df)):
+            nerList = find_NER_phrases(temp_df['text'][j])
+            for ner in nerList:
+                if ner in nerCount:
+                    nerCount[ner] += 1
+                    nerDict[ner].add(temp_df['review_id'][j])
+                else:
+                    nerCount[ner] = 1
+                    nerDict[ner] = {temp_df['review_id'][j]}
+        print("Done for business", biz_id, "in", (time.time()-start), "seconds")
+        business_ner_reviews[biz_id] = nerDict
+        business_ner_counts[biz_id] = nerCount
+
+        return_business = [business_ner_reviews,business_ner_counts]
+    
+    return return_business
+
+business_ner_reviews = business_ner_review()[0]
+business_ner_counts = business_ner_review()[1]
+
+# saving in json serializable format
+for b_id in business_ner_reviews.keys():
+    business_ner_reviews[b_id] = {k:list(v) for k,v in business_ner_reviews[b_id].items()}
+
+
+combined_reviews['most_common_nouns'] = combined_reviews.apply(lambda row: get_most_common_nouns(row['summary']),axis=1)
+business_review_noun = get_business_review_id(combined_reviews,data)
+
+# save files to json
+def json_write(business_review_id_clean,business_review_noun,business_ner_reviews,business_ner_counts):
+    with open('/Users/abhishekvaidyanathan/Desktop/NLP-Assignment1/business_review_id_clean.json', 'w') as convert_file:
+        convert_file.write(json.dumps(business_review_id_clean))
+
+    with open('/Users/abhishekvaidyanathan/Desktop/NLP-Assignment1/business_review_id_noun.json', 'w') as convert_file:
+        convert_file.write(json.dumps(business_review_noun)) 
+
+    with open('Application/pos_ner_reviews.json', 'w') as fileobj:
+        json.dump(business_ner_reviews, fileobj)
+
+    with open('Application/pos_ner_counts.json', 'w') as fileobj:
+        json.dump(business_ner_counts, fileobj)
+
+
+# summarization 
 def luhn_summarization():
     for i in range(len(business_ids)):
         biz_id = business_ids[i]
