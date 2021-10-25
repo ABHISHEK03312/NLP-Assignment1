@@ -5,12 +5,12 @@
 ### For 3.3) Indicative Adjective Phrases
 
 Dependencies:
-Stanford CoreNLP : 'https://stanfordnlp.github.io/CoreNLP/download.html
+Stanford CoreNLP : https://stanfordnlp.github.io/CoreNLP/download.html
 Prerequisites involve: 
-Java 8. The command java -version should complete successfully with a line like: `java version “1.8.0_92”.`
-Zip tool
-wget
-Steps to download and setup:
+* java 8, 
+* Zip tool, 
+* wget
+#### Steps to download and setup:
 1. Run the command: 
 ```
 wget http://nlp.stanford.edu/software/stanford-corenlp-latest.zip
