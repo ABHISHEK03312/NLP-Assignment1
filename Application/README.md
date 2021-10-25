@@ -7,6 +7,7 @@ In this application, you can find out information about a business including the
 In a virtual environment, run:
 ```
 pip install requirements.txt
+python -m spacy download en
 ```
 
 ### Executing the code
