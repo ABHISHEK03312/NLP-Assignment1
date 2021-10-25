@@ -1,1 +1,29 @@
 # NLP-Assignment1
+
+
+
+### For 3.3) Indicative Adjective Phrases
+
+Dependencies:
+Stanford CoreNLP : 'https://stanfordnlp.github.io/CoreNLP/download.html
+Prerequisites involve: 
+Java 8. The command java -version should complete successfully with a line like: `java version “1.8.0_92”.`
+Zip tool
+wget
+Steps to download and setup:
+1. Run the command: 
+```
+wget http://nlp.stanford.edu/software/stanford-corenlp-latest.zip
+unzip stanford-corenlp-latest.zip
+```
+
+Now in the same directory where your notebook is, 
+`stanford-corenlp-4.2.2` and `stanford-corenlp-4.2.2-models-english.jar` should be there
+Navigate to inside the stanford-corenlp-4.2.2 directory
+
+#### Run the command to start the server: 
+```
+java -mx4g -cp "*" edu.stanford.nlp.pipeline.StanfordCoreNLPServer
+```
+Note: 
+The adjective phrases for each business has already been extracted using the CoreNLPParser and is stored in data/adjective_phrases/business_adjective_phrases.txt
