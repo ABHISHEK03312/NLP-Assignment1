@@ -13,7 +13,7 @@ def getSentimentdf(inp_df):
 
 def summarise(biz):
     # summary=extract_summary(biz)
-    data = pd.read_csv("/Users/abhishekvaidyanathan/Desktop/NLP-Assignment1/Application/cleaned_reviews.csv")
+    data = pd.read_csv("cleaned_reviews.csv")
     for i in range(len(data)):
         if data["business_id"][i]==biz:
             return data["summary"][i]
@@ -45,7 +45,7 @@ def top_negative(df, biz):
 
 def ReadNER(biz):
     # NER_dict={"ZBE-H_aUlicix_9vUGQPIQ":{"NER1":["r1", "r2"]}}
-    with open('/Users/abhishekvaidyanathan/Desktop/NLP-Assignment1/data/application_ner_tags/business_review_noun_new.json', "r") as f:
+    with open('business_review_noun_new.json', "r") as f:
         NER_dict = json.loads(f.read())
     return NER_dict[biz]
     # return {"NER1":["r1", "r2"], "NER2":["r3", "r4"]}
