@@ -4,7 +4,7 @@
 
 Install Dependencies for the notebook using the command
 ```
-pip install -r requirements.txt
+pip install -r requirements_main.txt
 python -m spacy download en
 ```
 
