@@ -8,7 +8,7 @@ from utils import *
 @app.route('/', methods=['GET', 'POST'])
 def search_biz():
 
-    data = pd.read_csv("reviewSelected100.csv")
+    data = pd.read_csv("/Users/abhishekvaidyanathan/Desktop/NLP-Assignment1/Application/reviewSelected100.csv")
     # default values
     data_dict={
         "bid":list(data.business_id.unique()),
