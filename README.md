@@ -5,11 +5,16 @@
 Install Dependencies for the notebook using the command
 ```
 pip install -r requirements.txt
+python -m spacy download en
 ```
 
 Further run the following Commands in a .py file to download the packages:
 ```
-
+nltk.download('stopwords')
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('wordnet')
+nltk.download('universal_tagset')
 ```
 
 
